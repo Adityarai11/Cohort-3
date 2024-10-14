@@ -45,13 +45,10 @@ app.put("/",function (req,res) {
     
         }
         res.json({
-    
         });
         
     }else{
-        res.status(411).json({
-
-        });
+        res.status(411).json({msg : "There are no Unhealthy kidneys"});
     }
 })
 app.delete("/",function (req,res) {
