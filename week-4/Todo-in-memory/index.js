@@ -24,7 +24,7 @@ const port = 3000;
 
 let todos = [];
 
-// get all todos
+// get all todos to read
 app.get("/", (req, res) => {
   res.send(todos);
 });
