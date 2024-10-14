@@ -44,7 +44,7 @@ app.put("/",function (req,res) {
             users[0].kidneys[i].healthy = true;
     
         }
-        res.json({
+        res.json({ 
         });
         
     }else{
