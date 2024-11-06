@@ -17,6 +17,28 @@ async function signup() {
     })
     alert("Signed up successfully");
 }
+async function signin() {
+    const username = document.getElementById("signup-username").value;
+    const password = document.getElementById("signup-password").value;
+
+    const response = await axios.post("http://localhost:3000/signin", {
+        username: username,
+        password: password
+    })
+    
+    localStorage.setItem("token", response.data.token);
+
+alert("You are signed in");
+}
+async function getUserInformation() {
+const response = await axios.get("http://localhost:3000/me", {
+    headers: {
+        token: localStorage.getItem("token")
+    }
+})
+document.getElementById("Information").innerHTML = "Username: " + response.data.username + " Password: " + response.data.password
+}
+getUserInformation();
 </script>
 <body>
     <div>
@@ -28,7 +50,7 @@ async function signup() {
     <div>SIGNIN
         <input type="text" name = "username" placeholder="username">
         <input type="text" name = "password" placeholder="password">
-        <button onclick ="signIn()">CREATE</button>
+        <button onclick ="signin()">CREATE</button>
     </div>
     <div>
         User Informaton

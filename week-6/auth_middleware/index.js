@@ -1,8 +1,10 @@
 const express = require('express');
 const app = express();
+const cors= require('cors')
 const jwt =  require('jsonwebtoken');
 const JWT_SECRET = "aaditya"
 app.use(express.json())
+app.use(cors({ origin: 'http://127.0.0.1:5500' }));
 const users = [];
 app.post("/signup",(req,res)=>{
     const username = req.body.username;
