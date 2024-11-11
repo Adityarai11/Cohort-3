@@ -1,7 +1,8 @@
 const {Router} = require("express");
 const userRouter = Router();
+const {usersModel} = require("../db/db");
 
-userRouter.post("/user/signup",async(req,res)=>{
+userRouter.post("/signup",async(req,res)=>{
         const requredBody =z.object({
             email:z.string().min(3).max(20).email(),
             password :z.string().min(8).max(30).regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])/, {
@@ -25,12 +26,12 @@ userRouter.post("/user/signup",async(req,res)=>{
 });
 
    
-userRouter.post("/user/signin",(req,res)=>{
+userRouter.post("/signin",(req,res)=>{
 
 });
 
 
-userRouter.get("/user/purchases",(req,res)=>{    
+userRouter.get("/purchases",(req,res)=>{    
 
 });
     
