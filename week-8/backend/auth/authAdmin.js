@@ -1,8 +1,8 @@
 const jwt  =require("jsonwebtoken");
-const JWT_USER_PASSWORD = "asdfghjklkm";
+const JWT_ADMIN_PASSWORD = "asdfghjklkm";
 function auth(req,res,next) {
     const token = req.headers.token;
-    const decodedData = jwt.verify(token,JWT_USER_PASSWORD);
+    const decodedData = jwt.verify(token,JWT_ADMIN_PASSWORD);
     if(decodedData){
         req.userId =decodedData.Id;
         next();
@@ -15,5 +15,5 @@ function auth(req,res,next) {
 
 module.exports = {
     auth,
-    JWT_USER_PASSWORD 
+    JWT_ADMIN_PASSWORD
 }
