@@ -1,5 +1,5 @@
 const jwt  =require("jsonwebtoken");
-const JWT_USER_PASSWORD = "asdfghjklkm";
+const JWT_USER_PASSWORD = process.env.JWT_USER_PASSWORD;
 function auth(req,res,next) {
     const token = req.headers.token;
     const decodedData = jwt.verify(token,JWT_USER_PASSWORD);
