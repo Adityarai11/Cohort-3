@@ -19,8 +19,9 @@ adminRouter.post("/signup",async(req,res)=>{
    if (!validation.success) {
        return res.status(400).json({
            message: "Invalid input data",
-           errors: validation.error.errors,
+           error: validation.error
        });
+       return
    }
    
    const {email,password,firstName,lastName} = req.body;
@@ -44,21 +45,21 @@ adminRouter.post("/signup",async(req,res)=>{
 });
 
 adminRouter.post("/signin",async(req,res)=>{
-    const {email,password} = req.body;
+    const {email,password,firstName,lastName} = req.body;
 
-    const admin = await adminModel.findOne({
+    const response = await adminModel.findOne({
         email: email
     });
-    if(!admin){
+    if(!response){
         res.status(403).json({
             message:"invalid user"
         })
     }
-    const passwordMatch = await bcrypt.compare(password,admin.password);
+    const passwordMatch = bcrypt.compare(password, response.password);
 
     if (passwordMatch){
         const token = jwt.sign({
-            id : admin._id.toString()
+            id : response._id.toString()
         },JWT_ADMIN_PASSWORD );
         res.json({
             token 
@@ -74,21 +75,47 @@ adminRouter.post("/course",auth,async(req,res)=>{
     const adminId =req.userId; 
     const{ title,description,price,imageUrl} = req.body;
 
-    await courseModel.create({
+    const course = await courseModel.create({
         title,
         description,
         price,
         imageUrl,
         creatorId : adminId
     })
-    res.json({
+    return res.json({
         message:"Course created",
         courseId:course._id
     })
 });
-adminRouter.put("/course",(req,res)=>{
+adminRouter.put("/course",auth,async(req,res)=>{
+    const adminId =req.userId; 
+    const{ title,description,price,imageUrl,courseId} = req.body;
+    // to learn about url in web 3 saas yt 
+    const course = await courseModel.updateOne({
+        _id : courseId,
+        creatorId : adminId
+
+    },{
+        title,
+        description,
+        price,
+        imageUrl,
+    })
+    res.json({
+        message:"Course updated",
+        courseId:course._id
+    })
+
 });
-adminRouter.get("/course/bulk",(req,res)=>{
+adminRouter.get("/course/bulk",auth,async(req,res)=>{
+    const adminId = req.userId; 
+    const course = await courseModel.find({
+        creatorId : adminId
+    })
+    res.json({
+        message:"Course updated",
+        course
+    })
 });
 
 module.exports ={

@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const {Router} = require("express");
 const userRouter = Router();
-const {usersModel} = require("../db/db");
+const {usersModel, purchaseModel} = require("../db/db");
 const {z} = require("zod");
 const jwt = require("jsonwebtoken");
 const {auth,JWT_USER_PASSWORD } = require("../auth/auth");
@@ -19,8 +19,9 @@ userRouter.post("/signup",async(req,res)=>{
     if (!validation.success) {
         return res.status(400).json({
             message: "Invalid input data",
-            errors: validation.error.errors,
+            error: validation.error
         });
+        return
     }
     
     const {email,password,firstName,lastName} = req.body;
@@ -73,8 +74,15 @@ userRouter.post("/signin",async(req,res)=>{
 });
 
 
-userRouter.get("/purchases",(req,res)=>{    
-    const {email,password,firstName,lastName} =req.body;
+userRouter.get("/purchases",auth,async(req,res)=>{    
+    const userId = req.userId;
+
+    const purchase = await purchaseModel.find({
+        userId
+    })
+    res.json({
+        purchase
+    })
 });
     
 

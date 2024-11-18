@@ -1,11 +1,27 @@
 const {Router} = require("express");
 const courseRouter = Router();
-const {courseModel} = require("../db/db");
+const {courseModel, purchaseModel} = require("../db/db");
+const {auth,JWT_USER_PASSWORD} =require("../auth/auth");
 
-courseRouter.post("/purchase",(req,res)=>{
+courseRouter.post("/purchase",auth,async(req,res)=>{
+    const userId = req.userId;
+    const courseId = req.body.courseId;
 
+    //should check that the user has actually paid the price
+    await purchaseModel.create({
+        userId,
+        courseId
+    })
+    res.json({
+        message:"You have successfully bought the course"
+    })
 });
-courseRouter.get("/preview",(req,res)=>{
+courseRouter.get("/preview",async(req,res)=>{
+    const courses = await courseModel.find({});
+
+    res.json({
+        courses
+    })
 
 });
     
