@@ -57,8 +57,7 @@ userRouter.post("/signin",async(req,res)=>{
             message:"invalid user"
         })
     }
-    const passwordMatch = await bcrypt.compare(password,response.password);
-
+    const passwordMatch = bcrypt.compare(password,response.password);
     if (passwordMatch){
         const token = jwt.sign({
             id : response._id.toString()

@@ -12,14 +12,14 @@ courseRouter.post("/purchase",auth,async(req,res)=>{
         userId,
         courseId
     })
-    res.json({
+     res.json({
         message:"You have successfully bought the course"
     })
 });
 courseRouter.get("/preview",async(req,res)=>{
     const courses = await courseModel.find({});
 
-    res.json({
+     res.json({
         courses
     })
 
